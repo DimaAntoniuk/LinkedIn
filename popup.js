@@ -1,7 +1,7 @@
 var links = [];
 
 function scrollDown() {
-  $('.jobs-search-results__list.artdeco-list').animate({ scrollTop: $(document).height() }, 1000);
+  $('.jobs-search-results').animate({ scrollTop: $('.jobs-search-results__list').height() }, 3000);
 }
 
 function checkStartPosotion() {
@@ -20,26 +20,19 @@ function parseLinks() {
       links.push($(this).attr('href'));
     }
   });
-  // $('.jobs-search-results__list.artdeco-list li').each(function() {
-  //   links.push($(this).find('.job-card-search__company-name a').attr('href'));
-  // });
+  nextPage();
 }
 
 function nextPage() {
   if($('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').text()) {
     $('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').trigger('click');
     parse();
-  } else {
-    parseLinks();
-  };
+  }
 }
 
 function parse() {
   scrollDown();
-  // $(window).load(function() {
-  parseLinks();
-  // });
-  nextPage();
+  setTimeout(parseLinks, 4000);
 }
 
 parse();
