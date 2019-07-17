@@ -1,4 +1,5 @@
 //SECOND PART
+var domain = 'https://www.linkedin.com';
 var employees = [];
 var employee = {
   "company_name": "ComapanyName",
@@ -8,19 +9,15 @@ var employee = {
   "job_title": "JobTitle"
 };
 
-$.each(links, function(index, value) {
-  //get from localStorage
+var company_name = $('.org-top-card-primary-content__content-inner span').text();
+var company_link = window.location.href;
+$('.link-without-visited-state').trigger('click');
+action();
 
-  add_employees();
-});
-
-function add_employees() {
-  var company_name = $('.org-top-card-primary-content__content-inner span').text();
-  var company_link = window.location.href;
-  $('.link-without-visited-state').attr('href').trigger('click');
-  parse();
-  localStorage.setItem('employees', JSON.stringify(employees));
+function action() {
+  setTimeout(parse, 1000);
 }
+localStorage.setItem('employees', JSON.stringify(employees));
 
 function set_employee_info(company_name, company_link, profile_link, name, job_title) {
   employee.company_name = company_name;
@@ -32,21 +29,27 @@ function set_employee_info(company_name, company_link, profile_link, name, job_t
 
 function parse() {
   scrollDown();
-  setTimeout(parseEmployees, 4000);
+  setTimeout(parseEmployees, 3000);
 }
 
 function scrollDown() {
-  $('head, body').animate({ scrollTop: $(document).height() }, 3000);
+  $('html, body').animate({ scrollTop: $(document).height() }, 3000);
 }
 
 function parseEmployees() {
-  $('search-result__info').each(function() {
-    var prifile_link = $('.search-result__result-link').attr('href');
-    var name = $('.search-result__result-link .name.actor-name').text();
+  $('.search-results__list li').each(function() {
+    var profile_link = '#';
+    if($(this).find('.search-result__result-link').attr('href') !== '#') {
+      profile_link = domain + $(this).find('.search-result__result-link').attr('href');
+    }
+    var name = $(this).find('.search-result__result-link .name.actor-name').text();
     var job_title = $(this).find('.subline-level-1 span').text();
-    set_employee_info(company_name, company_link, profile_link, name, job_title);
-    if(job_title.search('(?i)C.O') || job_title.search('(?i)Head of') || job_title.search('(?i)recruiter')) {
-      employees.push(employee);
+    set_employee_info('company_name', 'company_link', profile_link, name, job_title);
+    var pattern_cxo = /c.o/i;
+    var pattern_head = /head\sof/i;
+    var pattern_recruiter = /recruiter/i;
+    if(job_title.search(pattern_cxo)>0 || job_title.search(pattern_head)>0 || job_title.search(pattern_recruiter)>0) {
+      employees.push(JSON.stringify(employee));
     }
   });
   nextPage();

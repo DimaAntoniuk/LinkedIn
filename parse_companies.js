@@ -15,7 +15,6 @@ function checkStartPosotion() {
 }
 
 function parseLinks() {
-  // console.log($('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected span').text());
   $('.job-card-search__company-name-link').each(function(){
     if($(this).attr('href') !== '#') {
       links.push($(this).attr('href'));
