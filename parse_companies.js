@@ -1,7 +1,7 @@
 //FIRST PART
 var links = [];
-var domain = 'https://www.linkedin.com';
-checkStartPosotion();
+var domain = document.origin;
+checkStartPosition();
 
 function action() {
   setTimeout(parse, 4000);
@@ -12,7 +12,7 @@ function scrollDown() {
   $('.jobs-search-results').animate({ scrollTop: $('.jobs-search-results__list').height() }, 4000);
 }
 
-function checkStartPosotion() {
+function checkStartPosition() {
   if($('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected span').text() !== '1') {
     $('.artdeco-pagination__pages.artdeco-pagination__pages--number li').first().find('button').trigger('click');
   };
@@ -32,6 +32,8 @@ function nextPage() {
   if($('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').text()) {
     $('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').trigger('click');
     setTimeout(parse, 3000);
+  } else {
+    setTimeout(saveAndContinue, 3000);
   }
 }
 
@@ -41,17 +43,18 @@ function parse() {
 }
 
 
-if(window.localStorage.links) {
-  window.localStorage.removeItem('links');
-}
-window.localStorage.setItem('links', JSON.stringify(links));
+function saveAndContinue() {
+  if(window.localStorage.links) {
+    window.localStorage.removeItem('links');
+  }
+  window.localStorage.setItem('links', JSON.stringify(links));
+  var employees = [];
+  window.localStorage.setItem('employees', JSON.stringify(employees));
+  var index = 0;
+  window.localStorage.setItem('index', JSON.stringify(index));
 
-var index = 0;
-window.localStorage.setItem('index', JSON.stringify(index));
-
-if(links[index]) {
-  var win = window.open(links[index]);
-  var script = win.document.creadteElement('script');
-  script.src = 'parse_employees.js';
-  win.document.head.appendChild(script);
+  window.localStorage.setItem('mode', 'ready to parse employees');
+  if(links[index].length > 0) {
+    window.location.href = links[index];
+  }
 }

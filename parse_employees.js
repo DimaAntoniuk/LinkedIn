@@ -1,5 +1,6 @@
 //SECOND PART
 var domain = 'https://www.linkedin.com';
+var origin = document.origin;
 var employees = [];
 var employee = {
   "company_name": "ComapanyName",
@@ -66,14 +67,13 @@ if(window.localStorage.employees) {
   window.localStorage.removeItem('employees');
 }
 window.localStorage.setItem('employees', JSON.stringify(employees));
-
+debugger;
 var index = JSON.parse(window.localStorage.getItem('index'));
 var links = JSON.parse(window.localStorage.getItem('links'));
 index += 1;
 window.localStorage.setItem('index', JSON.stringify(index));
-if(links[index]) {
-  var win = window.open(links[index]);
-  var script = win.document.createElement('script');
-  script.src = 'parse_employees.js';
-  win.document.head.appendChild(script);
+if(links[index].length > 0) {
+  window.location.href = links[index];
+} else {
+  window.localStorage.setItem('mode', 'stop');
 }
