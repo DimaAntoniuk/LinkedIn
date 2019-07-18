@@ -1,7 +1,7 @@
 //SECOND PART
 var domain = 'https://www.linkedin.com';
 var origin = document.origin;
-var employees = [];
+var employees = JSON.parse(window.localStorage.get('employees'));
 var employee = {
   "company_name": "ComapanyName",
   "company_link": "ComapnyLink",
