@@ -1,7 +1,11 @@
 //SECOND PART
 var domain = 'https://www.linkedin.com';
 var origin = document.origin;
-var employees = JSON.parse(window.localStorage.get('employees'));
+// var employees = JSON.parse(window.localStorage.get('employees'));
+var employees;
+chrome.storage.local.get('employees', function(result) {
+  employees = result.employees;
+});
 var employee = {
   "company_name": "ComapanyName",
   "company_link": "ComapnyLink",
@@ -40,12 +44,13 @@ function parseEmployees() {
     }
     var name = $(this).find('.search-result__result-link .name.actor-name').text();
     var job_title = $(this).find('.subline-level-1 span').text();
-    set_employee_info('company_name', 'company_link', profile_link, name, job_title);
-    var pattern_cxo = /^c.o/i;
-    var pattern_head = /head\sof/i; //space pattern doesn't work
-    var pattern_recruiter = /recruiter/i;
-    if(job_title.search(pattern_cxo)>0 || job_title.search(pattern_head)>0 || job_title.search(pattern_recruiter)>0) {
-      employees.push(JSON.stringify(employee));
+    set_employee_info(company_name, company_link, profile_link, name, job_title);
+    var patterns = JSON.parse(window.localStorage.getItem('patterns'));
+    for(i=0;i<patterns.length-1;i+=1){
+      if(job_title.indexOf(patterns[i])>0) {
+        employees.push(JSON.stringify(employee));
+        break;
+      }
     }
   });
   setTimeout(nextPage, 3000);
@@ -63,17 +68,24 @@ function action() {
 }
 action();
 
-if(window.localStorage.employees) {
-  window.localStorage.removeItem('employees');
-}
-window.localStorage.setItem('employees', JSON.stringify(employees));
-debugger;
-var index = JSON.parse(window.localStorage.getItem('index'));
-var links = JSON.parse(window.localStorage.getItem('links'));
+chrome.storage.local.get('employees', function() {
+  chrome.storage.local.remove('employees');
+});
+chrome.storage.local.set({'employees':JSON.stringify(employees)});
+
+var index;
+var links;
+chrome.storage.local.get('index', function(result) {
+  index = result.index;
+});
+chrome.storage.local.get('links', function(result) {
+  links = JSON.parse(result.links);
+});
 index += 1;
-window.localStorage.setItem('index', JSON.stringify(index));
+chrome.storage.local.set({'index':index});
 if(links[index].length > 0) {
+  chrome.storage.local.set({'mode':'ready to parse employees'});
   window.location.href = links[index];
 } else {
-  window.localStorage.setItem('mode', 'stop');
+  chrome.storage.local.set({'mode':'stop'});
 }

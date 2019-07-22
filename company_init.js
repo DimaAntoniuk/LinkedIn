@@ -1,4 +1,9 @@
-if(window.location.href.startsWith('https://www.linkedin.com/company') && window.localStorage.mode === 'ready to parse employees') {
+var mode;
+chrome.storage.local.get('mode', function(result) {
+  mode = result.mode;
+});
+if(mode === 'ready to parse employees') {
+  chrome.storage.local.set({'mode':'parsing'});
   var script = window.document.createElement('script');
   script.src = 'parse_employees.js';
   window.document.head.appendChild(script);
