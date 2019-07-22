@@ -1,15 +1,13 @@
-chrome.browserAction.onClicked.addListener(function() {
-  console.log('0');
-  chrome.tabs.query({'active': true}, function (tabs) {
-    var url = tabs[0].url;
-    console.log('1');
-    if(url.startsWith('https://www.linkedin.com/jobs/search')) {
-      console.log('2');
-      document.getElementById('start').addEventListener('click', function(){
-        chrome.tabs.executeScript(tabs[0], {
-          file:"search_init.js"
-        });
+var extension_url = window.location.origin;
+chrome.storage.sync.set({'extension_url':JSON.stringify(extension_url)});
+
+chrome.tabs.query({'active': true}, function (tabs) {
+  var url = tabs[0].url;
+  if(url.startsWith('https://www.linkedin.com/jobs/search')) {
+    document.getElementById('start').addEventListener('click', function(){
+      chrome.tabs.executeScript(tabs[0].id, {
+        file:"search_init.js"
       });
-    };
-  });
+    });
+  };
 });
