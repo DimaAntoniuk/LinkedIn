@@ -52,7 +52,7 @@ function saveAndContinue() {
   chrome.storage.local.set({'employees':JSON.stringify(employees)});
   var index = 0;
   chrome.storage.local.set({'index':index});
-  chrome.storage.local.set({'mode':'ready to pparse employees'});
+  chrome.storage.local.set({'mode':'ready to parse employees'});
   if(links[index].length > 0) {
     window.location.href = links[index];
   }
