@@ -28,13 +28,15 @@
     {
       "matches":["*://www.linkedin.com/company*"],
       "js":["company_init.js"]
+    },
+    {
+      "matches":["*://www.linkedin.com/search/results/people/*"],
+      "js":["parse_employees.js"]
     }
-
   ],
 
   "web_accessible_resources" : [
-    "parse_companies.js",
-    "parse_employees.js"
+    "parse_companies.js"
   ]
 
 }

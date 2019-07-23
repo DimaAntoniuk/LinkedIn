@@ -1,15 +1,15 @@
-console.log('here');
 var mode;
 chrome.storage.local.get('mode', function(result) {
   mode = result.mode;
+  parse();
 });
-// console.log('mode');
-if(mode === 'ready to parse employees') {
-  chrome.storage.local.set({'mode':'parsing'});
-  chrome.tabs.query({'active': true}, function (tabs) {
-    chrome.tabs.executeScript(tabs[0].id, {file:"parse_employees.js"});
-  });
-  // var script = window.document.createElement('script');
-  // script.src = 'chrome-extension://fampefibmfnnfhljjalgkboogphidkge/parse_employees.js';
-  // window.document.head.appendChild(script);
+function parse() {
+  if(mode === 'ready to parse employees') {
+    chrome.storage.local.set({'mode':'parsing'});
+    var company_name = $('.org-top-card-primary-content__content-inner span').text();
+    var company_link = window.location.href;
+    chrome.storage.local.set('company_name':company_name);
+    chrome.storage.local.set('company_link':company_link);
+    $('.link-without-visited-state').trigger('click');
+  }
 }

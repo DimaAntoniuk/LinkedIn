@@ -1,4 +1,5 @@
 //SECOND PART
+console.log('start parsing');
 var domain = 'https://www.linkedin.com';
 var origin = document.origin;
 var employees;
@@ -13,11 +14,15 @@ var employee = {
   "job_title": "JobTitle"
 };
 
-var company_name = $('.org-top-card-primary-content__content-inner span').text();
-var company_link = window.location.href;
+var company_name;
+var company_link;
+chrome.storage.local.get('company_name', function(result) {
+  company_name = result.company_name;
+});
+chrome.storage.local.get('company_link', function(result) {
+  company_link = result.company_link;
+});
 
-$('.link-without-visited-state').trigger('click');
-console.log('done');
 function set_employee_info(company_name, company_link, profile_link, name, job_title) {
   employee.company_name = company_name;
   employee.company_link = company_link;
