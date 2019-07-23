@@ -1,7 +1,10 @@
 //SECOND PART
 var domain = 'https://www.linkedin.com';
 var origin = document.origin;
-var employees = JSON.parse(window.localStorage.getItem('employees'));
+var employees;
+chrome.storage.local.get('employees', function(result) {
+  employees = result.employees;
+});
 var employee = {
   "company_name": "ComapanyName",
   "company_link": "ComapnyLink",
@@ -41,10 +44,12 @@ function parseEmployees() {
     var name = $(this).find('.search-result__result-link .name.actor-name').text();
     var job_title = $(this).find('.subline-level-1 span').text();
     set_employee_info(company_name, company_link, profile_link, name, job_title);
-    // var patterns = JSON.parse(window.localStorage.getItem('patterns'));
-    var patterns = ['recruiter'];
-    for(i=0;i<patterns.length;i+=1){
-      if(job_title.indexOf(patterns[i])>0) {
+    var key_words;
+    chrome.storage.local.get('key_words', function(result) {
+      key_words = result.key_words;
+    });
+    for(i=0;i<key_words.length;i+=1){
+      if(job_title.indexOf(key_words[i])>0) {
         employees.push(JSON.stringify(employee));
         break;
       }
@@ -65,17 +70,24 @@ function action() {
 }
 action();
 
-if(window.localStorage.employees) {
-  window.localStorage.removeItem('employees');
-}
-window.localStorage.setItem('employees', JSON.stringify(employees));
-var index = JSON.parse(window.localStorage.getItem('index'));
-var links = JSON.parse(window.localStorage.getItem('links'));
+chrome.storage.local.get('employees', function() {
+  chrome.storage.local.remove('employees');
+});
+chrome.storage.local.set({'employees':JSON.stringify(employees)});
+
+var index;
+var links;
+chrome.storage.local.get('index', function(result) {
+  index = result.index;
+});
+chrome.storage.local.get('links', function(result) {
+  links = JSON.parse(result.links);
+});
 index += 1;
-window.localStorage.setItem('index', JSON.stringify(index));
+chrome.storage.local.set({'index':index});
 if(links[index].length > 0) {
-  window.localStorage.setItem('mode','ready to parse employees');
+  chrome.storage.local.set({'mode':'ready to parse employees'});
   window.location.href = links[index];
 } else {
-  window.localStorage.setItem('mode', 'stop');
+  chrome.storage.local.set({'mode':'stop'});
 }

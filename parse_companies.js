@@ -44,15 +44,15 @@ function parse() {
 
 
 function saveAndContinue() {
-  if(window.localStorage.getItem('links')) {
-    window.localStorage.removeItem('links');
-  };
-  window.localStorage.setItem('links',JSON.stringify(links));
+  chrome.storage.local.get('links', function() {
+    chrome.storage.local.remove('links');
+  });
+  chrome.storage.local.set({'links':JSON.stringify(links)});
   var employees = [];
-  window.localStorage.setItem('employees',JSON.stringify(employees));
+  chrome.storage.local.set({'employees':JSON.stringify(employees)});
   var index = 0;
-  window.localStorage.setItem('index',index);
-  window.localStorage.setItem('mode','ready to parse employees');
+  chrome.storage.local.set({'index':index});
+  chrome.storage.local.set({'mode':'ready to pparse employees'});
   if(links[index].length > 0) {
     window.location.href = links[index];
   }

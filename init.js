@@ -1,5 +1,5 @@
 var extension_url = window.location.origin;
-chrome.storage.sync.set({'extension_url':JSON.stringify(extension_url)});
+chrome.storage.local.set({'extension_url':JSON.stringify(extension_url)});
 
 chrome.tabs.query({'active': true}, function (tabs) {
   var url = tabs[0].url;
