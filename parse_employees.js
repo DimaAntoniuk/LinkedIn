@@ -49,10 +49,11 @@ function parseEmployees() {
     var name = $(this).find('.search-result__result-link .name.actor-name').text();
     var job_title = $(this).find('.subline-level-1 span').text();
     set_employee_info(company_name, company_link, profile_link, name, job_title);
-    var key_words;
-    chrome.storage.local.get('key_words', function(result) {
-      key_words = result.key_words;
-    });
+    var key_words = [];
+    // chrome.storage.local.get('key_words', function(result) {
+    //   key_words = result.key_words;
+    // });
+    key_words.push('recruiter');
     for(i=0;i<key_words.length;i+=1){
       if(job_title.indexOf(key_words[i])>0) {
         employees.push(JSON.stringify(employee));
@@ -64,7 +65,8 @@ function parseEmployees() {
 }
 
 function nextPage() {
-  if($('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').text()) {
+  if($('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').text() &&
+      $('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').text() != '3') {
     $('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').trigger('click');
     setTimeout(parse, 3000);
   }

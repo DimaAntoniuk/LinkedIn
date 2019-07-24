@@ -27,11 +27,11 @@
   "content_scripts": [
     {
       "matches":["*://www.linkedin.com/company*"],
-      "js":["company_init.js"]
+      "js":["jquery-3.4.1.min.js","company_init.js"]
     },
     {
-      "matches":["*://www.linkedin.com/search/results/people/*"],
-      "js":["parse_employees.js"]
+      "matches":["*://www.linkedin.com/search/results/people*"],
+      "js":["jquery-3.4.1.min.js", "parse_employees.js"]
     }
   ],
 
