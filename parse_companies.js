@@ -22,7 +22,7 @@ function checkStartPosition() {
 function parseLinks() {
   $('.job-card-search__company-name-link').each(function(){
     if($(this).attr('href') !== '#') {
-      links.push($(this).attr('href'));
+      links.push({link:$(this).attr('href')});
     }
   });
   setTimeout(nextPage, 3000);
@@ -47,13 +47,17 @@ function saveAndContinue() {
   chrome.storage.local.get('links', function() {
     chrome.storage.local.remove('links');
   });
-  chrome.storage.local.set({'links':JSON.stringify(links)});
-  var employees = [];
-  chrome.storage.local.set({'employees':JSON.stringify(employees)});
-  var index = 0;
-  chrome.storage.local.set({'index':index});
-  chrome.storage.local.set({'mode':'ready to parse employees'});
-  if(links[index].length > 0) {
-    window.location.href = links[index];
-  }
+  chrome.storage.local.get({links:[]}, function(result) {
+    chrome.storage.local.set({links:links}, function() {
+      chrome.storage.local.get('links', function(result) {
+        var index = 0;
+        var links = result.links;
+        chrome.storage.local.set({index:index});
+        chrome.storage.local.set({mode:'ready to parse employees'});
+        if(links[index].link.length > 0) {
+          window.location.href = links[index].link;
+        }
+      });
+    });
+  });
 }

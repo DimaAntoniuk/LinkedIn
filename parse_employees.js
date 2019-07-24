@@ -2,18 +2,7 @@
 console.log('start parsing');
 var domain = 'https://www.linkedin.com';
 var origin = document.origin;
-var employees;
-chrome.storage.local.get('employees', function(result) {
-  employees = result.employees;
-});
-var employee = {
-  "company_name": "ComapanyName",
-  "company_link": "ComapnyLink",
-  "profile_link": "ProfileLink",
-  "name": "Name",
-  "job_title": "JobTitle"
-};
-
+var employees = [];
 var company_name;
 var company_link;
 chrome.storage.local.get('company_name', function(result) {
@@ -22,14 +11,6 @@ chrome.storage.local.get('company_name', function(result) {
 chrome.storage.local.get('company_link', function(result) {
   company_link = result.company_link;
 });
-
-function set_employee_info(company_name, company_link, profile_link, name, job_title) {
-  employee.company_name = company_name;
-  employee.company_link = company_link;
-  employee.profile_link = profile_link;
-  employee.name = name;
-  employee.job_title = job_title;
-}
 
 function parse() {
   scrollDown();
@@ -48,15 +29,14 @@ function parseEmployees() {
     }
     var name = $(this).find('.search-result__result-link .name.actor-name').text();
     var job_title = $(this).find('.subline-level-1 span').text();
-    set_employee_info(company_name, company_link, profile_link, name, job_title);
     var key_words = [];
     // chrome.storage.local.get('key_words', function(result) {
     //   key_words = result.key_words;
     // });
-    key_words.push('recruiter');
+    key_words.push({key_word:'Magento'});
     for(i=0;i<key_words.length;i+=1){
-      if(job_title.indexOf(key_words[i])>0) {
-        employees.push(JSON.stringify(employee));
+      if(job_title.indexOf(key_words[i].key_word)>0) {
+        employees.push({company_name:company_name, company_link:company_link, profile_link:profile_link, name:name, job_title:job_title});
         break;
       }
     }
@@ -65,36 +45,53 @@ function parseEmployees() {
 }
 
 function nextPage() {
-  if($('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').text() &&
-      $('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').text() != '3') {
+  if($('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').text()) {
     $('.artdeco-pagination__indicator.artdeco-pagination__indicator--number.active.selected').next().find('button').trigger('click');
     setTimeout(parse, 3000);
+  } else {
+    setTimeout(action, 3000);
   }
 }
 
+parse();
+
 function action() {
-  setTimeout(parse, 3000);
-}
-action();
+  chrome.storage.local.get('employees', function() {
+    chrome.storage.local.remove('employees');
+  });
+  chrome.storage.local.get({employees:[]}, function() {
+    chrome.storage.local.set({employees:employees}, function(){
 
-chrome.storage.local.get('employees', function() {
-  chrome.storage.local.remove('employees');
-});
-chrome.storage.local.set({'employees':JSON.stringify(employees)});
+    });
+  });
 
-var index;
-var links;
-chrome.storage.local.get('index', function(result) {
-  index = result.index;
-});
-chrome.storage.local.get('links', function(result) {
-  links = JSON.parse(result.links);
-});
-index += 1;
-chrome.storage.local.set({'index':index});
-if(links[index].length > 0) {
-  chrome.storage.local.set({'mode':'ready to parse employees'});
-  window.location.href = links[index];
-} else {
-  chrome.storage.local.set({'mode':'stop'});
+  chrome.storage.local.get('index', function(result) {
+    var index = result.index;
+    index += 1;
+    chrome.storage.local.set({index:index});
+    chrome.storage.local.get('links', function(result) {
+      var links = result.links;
+      if(links[index].link.length > 0) {
+        chrome.storage.local.set({mode:'ready to parse employees'});
+        window.location.href = links[index].link;
+      } else {
+        chrome.storage.local.set({mode:'stop'});
+      }
+    });
+  });
 }
+
+
+
+
+
+// chrome.storage.local.get({links:[]},function(result) {
+//   var links = result.links;
+//   links.push({company_name:"name", company_link:"kjsnfjsd.com", number:10});
+//   links.push({company_name:"eman", company_link:"ooooooood.com", number:23});
+//   chrome.storage.local.set({links:links}, function() {
+//     chrome.storage.local.get('links', function(result) {
+//       console.log(result.links);
+//     });
+//   });
+// });
