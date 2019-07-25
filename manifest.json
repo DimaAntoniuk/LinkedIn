@@ -12,7 +12,8 @@
     "storage",
     "tabs",
     "<all_urls>",
-    "activeTab"
+    "activeTab",
+    "downloads"
   ],
   "browser_action": {
     "default_icon": "icon16.png",
@@ -24,7 +25,8 @@
       "search_init.js",
       "add_keyword.js",
       "remove_keyword.js",
-      "clear_keywords.js"
+      "clear_keywords.js",
+      "download.js"
     ]
   },
   "content_scripts": [

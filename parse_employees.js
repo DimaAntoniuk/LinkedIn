@@ -76,14 +76,8 @@ function action() {
         window.location.href = links[index].link;
       } else {
         chrome.storage.local.set({mode:'stop'});
+
       }
     });
   });
 }
-
-// var text = 'Some data I want to export';
-// var data = new Blob([text], {type: 'text/plain'});
-//
-// var url = window.URL.createObjectURL(data);
-//
-// document.getElementById('download_link').href = url;
