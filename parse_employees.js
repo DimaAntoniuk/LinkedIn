@@ -71,7 +71,7 @@ function action() {
     chrome.storage.local.set({index:index});
     chrome.storage.local.get('links', function(result) {
       var links = result.links;
-      if(links[index].link.length > 0) {
+      if(links.length > index) {
         chrome.storage.local.set({mode:'ready to parse employees'});
         window.location.href = links[index].link;
       } else {
