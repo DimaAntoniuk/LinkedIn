@@ -1,6 +1,6 @@
 var extension_url = window.location.origin;
 chrome.storage.local.set({extension_url:extension_url});
-// chrome.tabs.query({'active': true}, function (tabs) {
+
 chrome.tabs.getSelected(null, function(tab) {
   var url = tab.url;
   if(url.startsWith('https://www.linkedin.com/jobs/search')) {

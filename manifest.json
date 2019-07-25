@@ -21,7 +21,10 @@
   "background":{
     "scripts":[
       "jquery-3.4.1.min.js",
-      "search_init.js"
+      "search_init.js",
+      "add_keyword.js",
+      "remove_keyword.js",
+      "clear_keywords.js"
     ]
   },
   "content_scripts": [
