@@ -2,7 +2,7 @@
   "name": "Search It",
   "description": "Search It extension to parse employees",
   "manifest_version": 2,
-  "version": "7.3",
+  "version": "7.6",
   "icons": {
     "128": "images/icon128.png",
     "48": "images/icon48.png",
@@ -22,6 +22,7 @@
   "background":{
     "scripts":[
       "jquery-3.4.1.min.js",
+      "counter.js",
       "search/search_init.js",
       "keys/add_keyword.js",
       "keys/remove_keyword.js",

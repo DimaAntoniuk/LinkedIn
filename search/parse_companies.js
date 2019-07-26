@@ -44,9 +44,6 @@ function parse() {
 
 
 function saveAndContinue() {
-  chrome.storage.local.get('links', function() {
-    chrome.storage.local.remove('links');
-  });
   chrome.storage.local.get({links:[]}, function(result) {
     chrome.storage.local.set({links:links}, function() {
       chrome.storage.local.get('links', function(result) {
