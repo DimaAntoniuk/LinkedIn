@@ -4,9 +4,9 @@
   "manifest_version": 2,
   "version": "1.0",
   "icons": {
-    "128": "icon128.png",
-    "48": "icon48.png",
-    "16": "icon16.png"
+    "128": "images/icon128.png",
+    "48": "images/icon48.png",
+    "16": "images/icon16.png"
   },
   "permissions": [
     "storage",
@@ -16,27 +16,27 @@
     "downloads"
   ],
   "browser_action": {
-    "default_icon": "icon16.png",
+    "default_icon": "images/icon16.png",
     "default_popup": "popup.html"
   },
   "background":{
     "scripts":[
       "jquery-3.4.1.min.js",
-      "search_init.js",
-      "add_keyword.js",
-      "remove_keyword.js",
-      "clear_keywords.js",
-      "download.js"
+      "search/search_init.js",
+      "keys/add_keyword.js",
+      "keys/remove_keyword.js",
+      "keys/clear_keywords.js",
+      "download/download.js"
     ]
   },
   "content_scripts": [
     {
       "matches":["*://www.linkedin.com/company*"],
-      "js":["jquery-3.4.1.min.js","company_init.js"]
+      "js":["jquery-3.4.1.min.js","company/company_init.js"]
     },
     {
       "matches":["*://www.linkedin.com/search/results/people*"],
-      "js":["jquery-3.4.1.min.js", "parse_employees.js"]
+      "js":["jquery-3.4.1.min.js", "company/parse_employees.js"]
     }
   ],
 
