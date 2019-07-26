@@ -7,7 +7,7 @@
 3. Upload unpacked extension from your remote folder;
 
 ## Usage
-1. Open [LinckedIn](https://www.linkedin.com/jobs/search);
+1. Open [LinkedIn](https://www.linkedin.com/jobs/search);
 2. Click on extension's icon in a tool bar of Google Chrome browser;
 3. Edit keywords list with 'ADD', 'REMOVE', 'CLEAR' buttons in extension popup page;
 4. Click 'START' button to start parsing;
