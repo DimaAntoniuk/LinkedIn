@@ -7,12 +7,16 @@ chrome.storage.local.get('employees', function(result) {
 });
 var company_name;
 var company_link;
+var company_country;
 chrome.storage.local.get('company_name', function(result) {
   company_name = result.company_name;
 });
 chrome.storage.local.get('company_link', function(result) {
   company_link = result.company_link;
 });
+chrome.storage.local.get('country', function(result) {
+  company_country = result.country;
+})
 
 function parse() {
   scrollDown();
@@ -36,7 +40,7 @@ function parseEmployees() {
       key_words = result.key_words;
       for(i=0;i<key_words.length;i+=1){
         if(job_title.indexOf(key_words[i].key_word)>=0) {
-          employees.push({company_name:company_name, company_link:company_link, profile_link:profile_link, name:name, job_title:job_title});
+          employees.push({company_name:company_name, company_link:company_link, company_country:company_country, profile_link:profile_link, name:name, job_title:job_title});
 
           break;
         }

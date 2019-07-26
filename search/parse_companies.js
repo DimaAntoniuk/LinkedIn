@@ -22,7 +22,7 @@ function checkStartPosition() {
 function parseLinks() {
   $('.job-card-search__company-name-link').each(function(){
     if($(this).attr('href') !== '#') {
-      links.push({link:$(this).attr('href')});
+      links.push({link:$(this).attr('href'), country:$(this).parent().next()[0].innerText});
     }
   });
   setTimeout(nextPage, 3000);
