@@ -52,6 +52,7 @@ function saveAndContinue() {
       chrome.storage.local.get('links', function(result) {
         var index = 0;
         var links = result.links;
+        chrome.storage.local.set({all_companies:links.lenght});
         chrome.storage.local.set({index:index});
         chrome.storage.local.set({mode:'ready to parse employees'});
         if(links[index].link.length > 0) {

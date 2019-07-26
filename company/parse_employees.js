@@ -76,7 +76,6 @@ function action() {
         window.location.href = links[index].link;
       } else {
         chrome.storage.local.set({mode:'stop'});
-
       }
     });
   });
