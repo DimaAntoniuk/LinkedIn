@@ -1,6 +1,6 @@
 {
-  "name": "Employee Parser For LinkedIn",
-  "description": "App which works on web page: https://www.linkedin.com/jobs/search/",
+  "name": "Search It",
+  "description": "Search It extension to parse employees",
   "manifest_version": 2,
   "version": "1.0",
   "icons": {
