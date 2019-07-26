@@ -1,9 +1,15 @@
-// chrome.browserAction.onClicked.addListener(function(tab) {
-//   chrome.storage.local.get({all_companies:0}, function(result) {
-//     chrome.storage.local.get('index', function(result_l) {
-//       var text = result_l.index.toString() + '/';
-//       text += result_r.all_companies.toString();
-//       jQuery('#counter').innerText = text;
-//     });
-//   });
-// });
+chrome.storage.onChanged.addListener(function() {
+  chrome.storage.local.get({links:[]}, function(result) {
+    var result_r = result.links.length;
+    chrome.storage.local.get('index', function(result) {
+      var result_l = result.index + 1;
+      var text = result_l.toString() + ' / ';
+      text += result_r.toString();
+      try {
+        jQuery('#counter')[0].innerText = text;
+      }
+      catch(err) {
+      }
+    });
+  });
+});
